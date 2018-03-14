@@ -1,0 +1,94 @@
+/* tools while building */
+
+.col-4 {
+  /* border: dashed green; */
+}
+
+.row.month,
+.row .weekDay,
+.col-12 {
+  border: dashed green;
+}
+
+
+
+/* Design Start */
+.bordered {
+  border: solid black;
+}
+
+/* All Dates */
+.date {
+  color: red;
+  margin: 0;
+}
+
+/* All Months */
+.month {
+  font-family: 'Rye', cursive;
+}
+
+/* All Years */
+.year{
+  font-weight: bold;
+  font-family: 'Rye', cursive;
+}
+
+
+/* BIGBOX */
+.bigBox {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+/* Day on the Big Screen */
+#thisDay {
+  font-size: 15rem;
+  color: red;
+}
+
+/* Month on the Big Screen */
+#thisMonth {
+  font-size: 4rem;
+}
+
+/* Year on the Big Screen */
+#thisYear {
+  font-size: 4rem;
+}
+
+/* NARROWBOX */
+
+/* Titles */
+.title {
+    margin: 0;
+}
+
+/* Dates in the Narrow box */
+.col-12.date p {
+  font-size: 3rem;
+  margin: 0;
+  font-weight: bold;
+}
+
+/* Months in the Narrow Box */
+.col-12.month p {
+  font-size: 2rem;
+  margin: 0;
+}
+
+/* Years in the Narrow Box */
+.col-12.year p {
+  font-size: 2rem;
+  margin: 0;
+}
+
+/* Calendar Tables */
+.monthTitle {
+
+}
+
+.weekDays {
+  font-family: arial;
+}

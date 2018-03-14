@@ -1,22 +1,328 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>Burckhard Day Counter</title>
-  </head>
-  <body>
-    <h1>Days Away</h1>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="index.css">
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-  </body>
+  <!-- Moment.js -->
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.21.0/moment-with-locales.js"></script>
+  <script defer src="index.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Rye" rel="stylesheet">
+  <script defer src="/holiday.js"></script>
+  <script defer src="/usHolidays.js"></script>
+
+  <title>Burckhart's Day Counter</title>
+</head>
+
+<body>
+  <h1>Days Away</h1>
+  <p> Select your Date: <input id="datePicker" type="date"> </p>
+  <br />
+  <br />
+
+  <div class='container container-fluid'>
+    <div class='row'>
+
+      <!--  BIG BOX -->
+
+      <div class='col-9 bordered align-content-stretch flex-wrap text-center'>
+
+        <div class='row h-25 align-baseline'>
+          <div class='col-4'>
+          </div>
+          <div class='col-4 bigBox'>
+            <h2 class='text-center month' id="thisMonth"> </h2>
+          </div>
+          <div class='col-4'>
+          </div>
+        </div>
+
+        <div class='row h-50'>
+          <div class='col-4'>
+          </div>
+          <div class='col-4 bigBox'>
+            <h2 class='text-center date' id="thisDay"> </h2>
+          </div>
+          <div class='col-4'>
+          </div>
+        </div>
+
+
+        <div class='row h-25'>
+          <div class='col-4'>
+          </div>
+          <div class='col-4 bigBox'>
+            <h2 class='text-center year' id="thisYear"> </h2>
+          </div>
+          <div class='col-4'>
+          </div>
+        </div>
+
+      </div>
+
+      <!--  NARROW BOX  -->
+
+      <div class='col-3 d-flex align-content-stretch flex-wrap setPlusDays text-center'>
+
+        <!--  TOP BOX: +30  -->
+        <div class='row setDays'>
+          <div class='col bordered'>
+            <!-- Title  -->
+            <div class='row'>
+              <div class='col-12'>
+                <h4 class='title'>30 DAYS FROM NOW</h4>
+              </div>
+            </div>
+            <!-- Month -->
+            <div class='row'>
+              <div class='col-12 month'>
+                <p class='thirtyMonth'></p>
+              </div>
+            </div>
+            <!-- Date  -->
+            <div class='row'>
+              <div class='col-12 date'>
+                <p class='thirtyDay'></p>
+              </div>
+            </div>
+            <!-- Year  -->
+            <div class='row'>
+              <div class='col-12 year'>
+                <p class='thirtyYear'></p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--  MIDDLE BOX: +60  -->
+        <div class='row setDays'>
+          <div class='col bordered'>
+            <!--  Title  -->
+            <div class='row'>
+              <div class='col-12'>
+                <h4 class='title'>60 DAYS FROM NOW</h4>
+              </div>
+            </div>
+            <!--  Month  -->
+            <div class='row'>
+              <div class='col-12 month'>
+                <p class='sixtyMonth'></p>
+              </div>
+            </div>
+            <!-- Date  -->
+            <div class='row'>
+              <div class='col-12 date'>
+                <p class='sixtyDay'></p>
+              </div>
+            </div>
+            <!-- Year  -->
+            <div class='row'>
+              <div class='col-12 year'>
+                <p class='sixtyYear'></p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- MIDDLE BOX: +90  -->
+        <div class='row setDays'>
+          <div class='col bordered'>
+            <!-- Title  -->
+            <div class='row'>
+              <div class='col-12'>
+                <h4 class='title'>90 DAYS FROM NOW</h4>
+              </div>
+            </div>
+            <!-- Month  -->
+            <div class='row'>
+              <div class='col-12 month'>
+                <p class='ninetyMonth'></p>
+              </div>
+            </div>
+            <!-- Date  -->
+            <div class='row'>
+              <div class='col-12 date'>
+                <p class='ninetyDay'></p>
+              </div>
+            </div>
+            <!-- Year  -->
+            <div class='row'>
+              <div class='col-12 year'>
+                <p class='ninetyYear'></p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class='row'>
+        </div>
+
+      </div>
+    </div>
+    <div class='row month text-center'>
+      <div class="col">
+        <div class='row monthTitle text-center'>
+        </div>
+        <div class='row weekDays'>
+          <div class='sunday col weekDay'>
+            <p>Sun</p>
+          </div>
+          <div class='monday col weekDay'>
+            <p>Mon</p>
+          </div>
+          <div class='tuesday col weekDay'>
+            <p>Tues</p>
+          </div>
+          <div class='wednesday col weekDay'>
+            <p>Wed</p>
+          </div>
+          <div class='thursday col weekDay'>
+            <p>Thurs</p>
+          </div>
+          <div class='friday col weekDay'>
+            <p>Fri</p>
+          </div>
+          <div class='saturday col weekDay'>
+            <p>Sat</p>
+          </div>
+        </div>
+        <div class='row week1'>
+          <div class='sunday weekDay col'>
+            <div class = 'row'>
+              <div class = 'col'>
+                <p></p>
+              </div>
+              <div class = 'col'>
+              </div>
+              <div class = 'col'>
+              </div>
+            </div>
+            <div class = 'row'>
+              <div class = 'col'>
+              </div>
+              <div class = 'col'>
+                <p></p>
+              </div>
+              <div class = 'col'>
+              </div>
+            </div>
+            <div class = 'row'>
+              <div class = 'col'>
+              </div>
+              <div class = 'col'>
+              </div>
+              <div class = 'col'>
+              </div>
+            </div>
+          </div>
+          <div class='monday weekDay col'>
+          </div>
+          <div class='tuesday weekDay col'>
+          </div>
+          <div class='wednesday weekDay col'>
+          </div>
+          <div class='thursday weekDay col'>
+          </div>
+          <div class='friday weekDay col'>
+          </div>
+          <div class='saturday weekDay col'>
+          </div>
+        </div>
+        <div class='row week2'>
+          <div class='sunday weekDay'>
+          </div>
+          <div class='monday weekDay'>
+          </div>
+          <div class='tuesday weekDay'>
+          </div>
+          <div class='wednesday weekDay'>
+          </div>
+          <div class='thursday weekDay'>
+          </div>
+          <div class='friday weekDay'>
+          </div>
+          <div class='saturday weekDay'>
+          </div>
+        </div>
+        <div class='row week3'>
+          <div class='sunday weekDay'>
+          </div>
+          <div class='monday weekDay'>
+          </div>
+          <div class='tuesday weekDay'>
+          </div>
+          <div class='wednesday weekDay'>
+          </div>
+          <div class='thursday weekDay'>
+          </div>
+          <div class='friday weekDay'>
+          </div>
+          <div class='saturday weekDay'>
+          </div>
+        </div>
+        <div class='row week4'>
+          <div class='sunday weekDay'>
+          </div>
+          <div class='monday weekDay'>
+          </div>
+          <div class='tuesday weekDay'>
+          </div>
+          <div class='wednesday weekDay'>
+          </div>
+          <div class='thursday weekDay'>
+          </div>
+          <div class='friday weekDay'>
+          </div>
+          <div class='saturday weekDay'>
+          </div>
+        </div>
+        <div class='row week5'>
+          <div class='sunday weekDay'>
+          </div>
+          <div class='monday weekDay'>
+          </div>
+          <div class='tuesday weekDay'>
+          </div>
+          <div class='wednesday weekDay'>
+          </div>
+          <div class='thursday weekDay'>
+          </div>
+          <div class='friday weekDay'>
+          </div>
+          <div class='saturday weekDay'>
+          </div>
+        </div>
+        <div class='row week6'>
+          <div class='sunday weekDay'>
+          </div>
+          <div class='monday weekDay'>
+          </div>
+          <div class='tuesday weekDay'>
+          </div>
+          <div class='wednesday weekDay'>
+          </div>
+          <div class='thursday weekDay'>
+          </div>
+          <div class='friday weekDay'>
+          </div>
+          <div class='saturday weekDay'>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+
 </html>
