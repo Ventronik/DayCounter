@@ -7,9 +7,6 @@ datePicker.valueAsDate = new Date();
 
 let date = moment.utc(datePicker.valueAsDate)
 let daySelected = date.clone()
-// let daySelectedFormatted = daySelected.format();
-
-
 console.log(date)
 
 // Isolated Days, Months, and Years
@@ -18,8 +15,7 @@ let day = daySelected.format('DD');
 let monthNum = daySelected.format('MM');
 let month = daySelected.format('MMMM')
 let year = daySelected.year();
-// console.log(month)
-
+let daysOfTheWeek = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']
 
 // Days set X days from now:
 let plusThirty = daySelected.add(30, 'days').format()
@@ -55,8 +51,8 @@ ninetyYear.innerHTML = moment.utc(plusNinety).format('YYYY')
 
 let monthTitle = document.querySelector('.monthTitle')
 monthTitle.innerHTML = month
-
-
+let yearTitle = document.querySelector('.yearTitle')
+yearTitle.innerHTML = year
 
 
 // Date Object. Organized as  {Year: {Month:{Date:}}} Where the info in Date will be several key value pairs
@@ -67,7 +63,6 @@ function dateObj() {
     result[year] = {}
     result[year][monthNum] = {}
     result[year][monthNum][dateSelectedFromMonthStart.format('DD')] = {dayName: dateSelectedFromMonthStart.format('dddd'), count: (parseInt(dateSelectedFromMonthStart.format('DD')) - parseInt(date.format('DD'))) }
-  // console.log(result)
   let counter = 0
   // FOR LATER: see if we can swap 366 for something else.
   for(let i = 0; i < 366; i++) {
@@ -79,9 +74,6 @@ function dateObj() {
     let yearCog = working.year();
     let yearList = Object.entries(result)
     let dayOfWeek = working.format('dddd')
-    // console.log(dayCog)
-
-    // let dayList = Object.entries(result[yearCog][monthCog])
 
     if(!result.hasOwnProperty(yearCog)) {
       result[yearCog] = {}
@@ -89,7 +81,6 @@ function dateObj() {
 
     if(!result[yearCog].hasOwnProperty(monthCog)) {
       result[yearCog][monthCog] = {name: monthCogName}
-
     }
 
     if(!result[yearCog][monthCog].hasOwnProperty(dayCog)) {
@@ -103,108 +94,140 @@ function dateObj() {
       result[yearCog][monthCog][dayCog]['count'] =  ((parseInt(working.format('DD')) - parseInt(date.format('DD'))))
     }
   }
-  console.log(result)
   return result
 }
-
 dateObj()
+
+
+
 
 
 // Build the calendars by cloning elements and populating the data
 function CalendarBuilder() {
-
-}
-
-CalendarBuilder
-
-
-
-
-
-
-
-
+  let monthBox = document.querySelector('.monthBox')
+  let weekRow = document.querySelector('.weekRow')
+  let dayBox = document.querySelector('.dayBox')
+  let dateObjCycler = dateObj()
+  console.log(dateObjCycler)
+  let parent = document.querySelector('.container')
+  let titleRow = document.querySelector('.titleRow')
+  let titleBox = document.querySelector('.titleBox')
+  let blankBox = document.querySelector('.blankBox')
+  let blankBuilder = blankBox.cloneNode(true)
 
 
+// Pick out the years
+  for(let years in dateObjCycler) {
+    // Pick out the months, and order them properly
+    let monthArr = Object.keys(dateObjCycler[years]).sort()
+    // console.log(monthArr)
+
+    // cycle through the months and build a new calendar month for each
+    for(let months of monthArr) {
+      console.log(dateObjCycler[years][months]['01'])
+      let theFirstIsA = dateObjCycler[years][months]['01']['dayName']
+      // console.log(theFirstIsA + ' ' + JSON.stringify(dateObjCycler[years][months]['01']) + ' ' + months)
+        //clone the month
+      let newBox = monthBox.cloneNode(true)
+      newBox.classList.remove('hidden')
+      let weekInsert = newBox.querySelector('.insertRows')
+
+      let monthText = newBox.firstElementChild.firstElementChild
+      monthText.innerHTML = moment(months, 'MM').format('MMMM')
+
+      let yearText = newBox.firstElementChild.children[1]
+      yearText.innerHTML = years
+      //Put month at the bottom of the page
+      parent.appendChild(newBox)
 
 
 
+      //the week object we will be cloning
+      let newWeekRow = newBox.querySelector('.weekRow')
+      // console.log(months+': '+theFirstIsA )
+
+      // build the titleRow
+      for(let title of daysOfTheWeek) {
+        let newTitle = titleBox.cloneNode(true)
+        newTitle.innerHTML = title.slice(0,3)
+        newTitle.classList.remove('hidden')
+        newBox.querySelector('.titleRow').appendChild(newTitle)
+      }
+        // build the weeks of the month
+
+          //build the blank boxes at the beginning of the month
+      for(let blankMaker = 0; blankMaker < daysOfTheWeek.indexOf(theFirstIsA); blankMaker++) {
+
+        let blankBuilder = blankBox.cloneNode(true)
+        blankBuilder.innerHTML= 'blank'
+        blankBuilder.classList.remove('hidden')
+        newWeekRow.appendChild(blankBuilder)
+      }
+
+          //build days that aren't blank, and subsequent weekDays
+
+      let dayArr = Object.keys(dateObjCycler[years][months]).sort()
+// console.log(dayArr)
+      for (let contentMaker of dayArr) {
+
+        let dayInQuestion = dateObjCycler[years][months][contentMaker].dayName
+        let contentBox = document.querySelector('.fillBox')
+        let contentBuilder = contentBox.cloneNode('true')
+        contentBuilder.innerHTML = contentMaker
+        // console.log(contentMaker)
+        contentBuilder.classList.remove('hidden')
 
 
 
+        if (dayInQuestion && dayInQuestion === daysOfTheWeek[0]) {
 
+          let nextWeekRow = weekRow.cloneNode(true)
+          // console.log(months, nextWeekRow)
+          nextWeekRow.appendChild(contentBuilder)
+          weekInsert.appendChild(newWeekRow)
+          weekInsert.appendChild(nextWeekRow)
+          newWeekRow = nextWeekRow
+        } else {
+          if (contentMaker === 'name') {
+              let contentBoxesSoFar = newWeekRow.children
+              for(let soFar = contentBoxesSoFar.length; soFar < 9; soFar++) {
+                let newBlankBuilder = blankBox.cloneNode(true)
+                newBlankBuilder.innerHTML= 'blank'
+                newBlankBuilder.classList.remove('hidden')
+                newWeekRow.appendChild(newBlankBuilder.cloneNode(true))
 
-
-
-// Lower Calendar fill
-function calendarFill(date) {
-  let dayResult = []
-  let monthResult = []
-  let yearResult = []
-
-  // Take the year from current date, and d+365, make 2 empty objects
-  // Fill the empty objects with empty month objects
-  // fill empty month objects with empty day objects
-  // fill empty day objects with key value pairs
-  // key value pairs: date, count from current, day of the week, holiday
-  //
-  //
-  //
-  //
-  //
-
-
-  for (let i = 0; i < 366; i++) {
-    let dd = date.add(1, 'days').format('DD')
-    let mm = date.add(1, 'days').format('MMMM')
-    let yy = ''
-    dayResult.push(dd)
-    if (monthResult.indexOf(mm) === -1) {
-      monthResult.push(mm)
+              }
+          } else {
+          newWeekRow.appendChild(contentBuilder)
+          }
+        }
+      }
     }
   }
-  return monthResult
 }
-
-// console.log(calendarFill(date))
-
+CalendarBuilder ()
 
 
+// funtion createWeek () {
+  //create Node
+
+// }
 
 
 
 
 
 
-//start of super function
+
+//start of update function
 document.getElementById('datePicker').addEventListener('change', () => {
-  let workingDate = moment.utc(document.getElementById('datePicker').valueAsDate);
 
-  day = workingDate.format('DD');
-  monthNum = workingDate.month() + 1;
-  month = workingDate.format('MMMM')
-  year = workingDate.year();
 
-  plusThirty = workingDate.add(30, 'days').format()
-  plusSixty = workingDate.add(30, 'days').format()
-  plusNinety = workingDate.add(30, 'days').format()
-
-  document.querySelector('#thisMonth').innerHTML = month;
-  document.querySelector('#thisDay').innerHTML = day;
-  document.querySelector('#thisYear').innerHTML = year;
-
-  thirtyDay.innerHTML = moment.utc(plusThirty).format('DD')
-  thirtyMonth.innerHTML = moment.utc(plusThirty).format('MMMM')
-  thirtyYear.innerHTML = moment.utc(plusThirty).format('YYYY')
-
-  sixtyDay.innerHTML = moment.utc(plusSixty).format('DD')
-  sixtyMonth.innerHTML = moment.utc(plusSixty).format('MMMM')
-  sixtyYear.innerHTML = moment.utc(plusSixty).format('YYYY')
-
-  ninetyDay.innerHTML = moment.utc(plusNinety).format('DD')
-  ninetyMonth.innerHTML = moment.utc(plusNinety).format('MMMM')
-  thirtyYear.innerHTML = moment.utc(plusNinety).format('YYYY')
 
   console.log(day)
+
+  dateObj ()
+  // console.log(dateObj())
+  CalendarBuilder()
   // }
 }) //end of super function

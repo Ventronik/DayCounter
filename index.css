@@ -1,9 +1,13 @@
 /* tools while building */
 
-.col-4 {
-  /* border: dashed green; */
+.nextWeekRow,
+.newWeekRow,
+.weekRow {
+  border: dashed red;
 }
 
+.fillBox,
+.blankBox,
 .row.month,
 .row .weekDay,
 .col-12 {
@@ -91,4 +95,8 @@
 
 .weekDays {
   font-family: arial;
+}
+
+.hidden {
+  display: none;
 }
