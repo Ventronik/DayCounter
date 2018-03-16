@@ -3,7 +3,7 @@
 .nextWeekRow,
 .newWeekRow,
 .weekRow {
-  border: dashed red;
+  /* border: dashed red; */
 }
 
 .fillBox,
@@ -11,7 +11,7 @@
 .row.month,
 .row .weekDay,
 .col-12 {
-  border: dashed green;
+  /* border: dashed green; */
 }
 
 
@@ -30,12 +30,14 @@
 /* All Months */
 .month {
   font-family: 'Rye', cursive;
+  font-size: 3rem;
 }
 
 /* All Years */
 .year{
   font-weight: bold;
-  font-family: 'Rye', cursive;
+  font-family: 'Rockwell';
+  font-size: 2rem;
 }
 
 
@@ -99,4 +101,51 @@
 
 .hidden {
   display: none;
+}
+
+.fillBox {
+  border: solid black;
+  border-width: thin;
+}
+
+.dayDisplay {
+  color: red;
+}
+
+.green .dayDisplay {
+  color: white;
+}
+
+.monthBox {
+  border: solid black;
+}
+
+.titleRow {
+  border-bottom: solid black;
+  font-family: rockwell;
+  font-size: 1.5rem;
+}
+
+.bottomDateRow {
+  height: 1rem;
+}
+
+.yellow {
+  background-color: yellow;
+}
+
+.green {
+    background-color: green;
+}
+
+.blue {
+    background-color: cornflowerblue;
+    color: white;
+}
+
+.green {
+    background-color: green;
+}
+h1 {
+  margin: auto;
 }
