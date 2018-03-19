@@ -56,7 +56,7 @@
 
 /* Month on the Big Screen */
 #thisMonth {
-  font-size: 4rem;
+  font-size: 5em;
 }
 
 /* Year on the Big Screen */
@@ -103,6 +103,7 @@
   display: none;
 }
 
+.blankBox,
 .fillBox {
   border: solid black;
   border-width: thin;
@@ -110,6 +111,7 @@
 
 .dayDisplay {
   color: red;
+  font-size: 3rem;
 }
 
 .green .dayDisplay {
@@ -127,25 +129,33 @@
 }
 
 .bottomDateRow {
-  height: 1rem;
+  height: 2rem;
 }
 
 .yellow {
-  background-color: yellow;
+  background-color: #FFC242;
 }
 
 .green {
-    background-color: green;
+    background-color: #C0FF94;
 }
 
 .blue {
-    background-color: cornflowerblue;
+    background-color: #68DBFF;
     color: white;
 }
 
+.blue .dayDisplay {
+  color: white;
+}
+
 .green {
-    background-color: green;
+    background-color: #1DE885;
 }
 h1 {
   margin: auto;
+}
+
+.input {
+  margin-left: 10px;
 }

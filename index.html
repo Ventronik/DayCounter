@@ -22,11 +22,15 @@
 
 <body>
   <h1>Days Away</h1>
-  <p> Select your Date: <input id="datePicker" type="date"> </p>
+  <form>
+    <p> Select your Date: </p>
+      <input id="datePicker" type="date">
+      <!-- <button type="button" class="btn btn-primary">Reset to Today</button> -->
+  </form>
   <br />
   <br />
 
-  <div class='container container-fluid'>
+  <div class='container '>
     <div class='row'>
 
       <!--  BIG BOX -->
@@ -68,7 +72,7 @@
 
       <!--  NARROW BOX  -->
 
-      <div class='col-3 d-flex align-content-stretch flex-wrap setPlusDays text-center'>
+      <div class='col d-flex align-content-stretch flex-wrap setPlusDays text-center'>
 
         <!--  TOP BOX: +30  -->
         <div class='row setDays'>
@@ -180,65 +184,65 @@
         </div>
         <div class='row weekRow'>
           <div class='blankBox col hidden'>
-            <div class = 'row'>
-              <div class = 'col year'>
+            <div class='row'>
+              <div class='col year'>
                 <p></p>
               </div>
-              <div class = 'col'>
+              <div class='col'>
               </div>
-              <div class = 'col'>
+              <div class='col'>
               </div>
             </div>
-            <div class = 'row'>
-              <div class = 'col'>
+            <div class='row'>
+              <div class='col'>
               </div>
-              <div class = 'col year'>
+              <div class='col year'>
                 <p></p>
               </div>
-              <div class = 'col'>
+              <div class='col'>
               </div>
             </div>
-            <div class = 'row'>
-              <div class = 'col'>
+            <div class='row'>
+              <div class='col'>
               </div>
-              <div class = 'col'>
+              <div class='col'>
               </div>
-              <div class = 'col'>
+              <div class='col'>
               </div>
             </div>
           </div>
           <div class='fillBox col hidden'>
-            <div class = 'row'>
-              <div class = 'col calendarDate year'>
+            <div class='row'>
+              <div class='col calendarDate year'>
                 <p></p>
               </div>
-              <div class = 'col'>
+              <div class='col'>
               </div>
-              <div class = 'col'>
+              <div class='col'>
               </div>
             </div>
-            <div class = 'row'>
-              <div class = 'col'>
+            <div class='row'>
+              <div class='col'>
               </div>
-              <div class = 'col dayDisplay year'>
+              <div class='col dayDisplay year'>
                 <p></p>
               </div>
-              <div class = 'col'>
+              <div class='col'>
               </div>
             </div>
-            <div class = 'row bottomDateRow'>
-              <div class = 'col'>
+            <div class='row bottomDateRow'>
+              <div class='col'>
               </div>
-              <div class = 'col'>
+              <div class='col'>
               </div>
-              <div class = 'col'>
+              <div class='col'>
               </div>
             </div>
           </div>
         </div>
-        </div>
       </div>
     </div>
+  </div>
   </div>
   </div>
 
