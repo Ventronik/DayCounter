@@ -5,7 +5,7 @@ localStorage.getItem('datePicked') ? datePicker.value = JSON.parse(localStorage.
 let date = moment.utc(datePicker.valueAsDate)
 let daySelected = date.clone()
 
-console.log(moment(asdf))
+console.log(moment())
 
 // Isolated Days, Months, and Years
 let locale = "en-us"
