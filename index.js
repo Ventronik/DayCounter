@@ -1,25 +1,84 @@
 
+//The selected date on the page. Either inputed by the user, or defaults to today
 let datePicker = document.getElementById('datePicker')
 localStorage.getItem('datePicked') ? datePicker.value = JSON.parse(localStorage.getItem('datePicked')) : datePicker.valueAsDate = new Date();
 
-let date = moment.utc(datePicker.valueAsDate)
-let daySelected = date.clone()
-
-console.log(moment())
+let daySelected = moment.utc(datePicker.valueAsDate)
+const locale = "en-us"
 
 // Isolated Days, Months, and Years
-let locale = "en-us"
 let day = daySelected.format('DD');
+let weekNum = daySelected.week();
+// console.log(weekNum)
 let monthNum = daySelected.format('MM');
 let month = daySelected.format('MMMM')
 let year = daySelected.year();
-let daysOfTheWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+const daysOfTheWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
-let plusThirty = daySelected.clone().add(30, 'days').format()
-let plusSixty = daySelected.clone().add(60, 'days').format()
-let plusNinety = daySelected.clone().add(90, 'days').format()
+
+function dateObj() {
+  let date = moment.utc(datePicker.valueAsDate)
+  let dateSelectedFromMonthStart = moment.utc(date).startOf('month')
+
+  let endOfCalendar = dateSelectedFromMonthStart.clone().add(12, 'months').endOf('month')
+  console.log(dateSelectedFromMonthStart)
+
+  let calendarDayLength = endOfCalendar.diff(date, 'days')
+  let result = {}
+  result[year] = {}
+  result[year][monthNum] = {
+    name: month
+  }
+  result[year][monthNum][weekNum] = {}
+  result[year][monthNum][weekNum][dateSelectedFromMonthStart.format('DD')] = {
+    dayName: dateSelectedFromMonthStart.format('dddd'),
+    count: (parseInt(dateSelectedFromMonthStart.format('DD')) - parseInt(date.format('DD')))
+    // businessDayCount:
+  }
+
+  let counter = 0
+  for (let i = 0; i < calendarDayLength; i++) {
+    let working = dateSelectedFromMonthStart.add(1, 'days')
+    let dayCog = working.format('DD');
+    let weekCog = working.weeks()
+    let monthCog = working.format('MM')
+    let monthCogName = working.format('MMMM')
+    let yearCog = working.year();
+    let yearList = Object.entries(result)
+    let dayOfWeek = working.format('dddd')
+
+    if (!result.hasOwnProperty(yearCog)) result[yearCog] = {}
+
+    if (!result[yearCog].hasOwnProperty(monthCog)) {
+      result[yearCog][monthCog] = {
+        name: monthCogName
+      }
+    }
+
+    if (!result[yearCog][monthCog].hasOwnProperty(weekCog)) result[yearCog][monthCog][weekCog] = {}
+
+    if (!result[yearCog][monthCog][weekCog].hasOwnProperty(dayCog)) {
+      result[yearCog][monthCog][weekCog][dayCog] = {
+        dayName: dayOfWeek
+      }
+    }
+    if (working > date) {
+      counter++
+      result[yearCog][monthCog][weekCog][dayCog]['count'] = counter
+    } else {
+      result[yearCog][monthCog][weekCog][dayCog]['count'] = ((parseInt(working.format('DD')) - parseInt(date.format('DD'))))
+    }
+  }
+  return result
+}
+console.log(dateObj())
 
 function topFill() {
+
+  let plusThirty = daySelected.clone().add(30, 'days').format()
+  let plusSixty = daySelected.clone().add(60, 'days').format()
+  let plusNinety = daySelected.clone().add(90, 'days').format()
+
   // Pushing the current date to the BIGBOX
   document.querySelector('#thisMonth').innerHTML = month;
   document.querySelector('#thisDay').innerHTML = day;
@@ -58,59 +117,6 @@ function topFill() {
 topFill()
 
 // Date Object. Organized as  {Year: {Month:{Date:}}} Where the info in Date will be several key value pairs
-function dateObj() {
-
-  let dateSelectedFromMonthStart = moment.utc(date).startOf('month')
-  console.log(moment.utc(date).format(), moment.utc(dateSelectedFromMonthStart.format('DD')))
-  let result = {}
-  result[year] = {}
-  result[year][monthNum] = {
-    name: month
-  }
-  result[year][monthNum][dateSelectedFromMonthStart.format('DD')] = {
-    dayName: dateSelectedFromMonthStart.format('dddd'),
-    count: (parseInt(dateSelectedFromMonthStart.format('DD')) - parseInt(date.format('DD')))
-  }
-  console.log(result)
-  let counter = 0
-  // FOR LATER: see if we can swap 397 for something else.
-  for (let i = 0; i < 397; i++) {
-
-    let working = dateSelectedFromMonthStart.add(1, 'days')
-
-    let dayCog = working.format('DD');
-    let monthCog = working.format('MM')
-    let monthCogName = working.format('MMMM')
-    let yearCog = working.year();
-    let yearList = Object.entries(result)
-    let dayOfWeek = working.format('dddd')
-
-    if (!result.hasOwnProperty(yearCog)) {
-      result[yearCog] = {}
-    }
-
-    if (!result[yearCog].hasOwnProperty(monthCog)) {
-      result[yearCog][monthCog] = {
-        name: monthCogName
-      }
-    }
-
-    if (!result[yearCog][monthCog].hasOwnProperty(dayCog)) {
-      result[yearCog][monthCog][dayCog] = {
-        dayName: dayOfWeek
-      }
-    }
-
-    if (working > date) {
-      counter++
-      result[yearCog][monthCog][dayCog]['count'] = counter
-    } else {
-      result[yearCog][monthCog][dayCog]['count'] = ((parseInt(working.format('DD')) - parseInt(date.format('DD'))))
-    }
-  }
-  return result
-}
-// dateObj()
 
 // Build the calendars by cloning elements and populating the data
 function CalendarBuilder() {
@@ -250,15 +256,8 @@ function reset() {
   CalendarBuilder()
 }
 
-// let resetButton = document.querySelector('.btn')
-// resetButton.addEventListener('click', () => {
-//   reset()
-// })
-
 //start of update function
 document.getElementById('datePicker').addEventListener('change', () => {
-
-  // console.log(daySelected)
 
   date = moment.utc(datePicker.valueAsDate)
   daySelected = moment.utc(date.clone())
@@ -273,17 +272,9 @@ document.getElementById('datePicker').addEventListener('change', () => {
   plusThirty = daySelected.clone().add(30, 'days').format()
   plusSixty = daySelected.clone().add(60, 'days').format()
   plusNinety = daySelected.clone().add(90, 'days').format()
-  // console.log("actual:", z)
 
   topFill()
 
-  // console.log(day)
-  // dateObj ()
-  // console.log(dateObj())
   CalendarBuilder()
 
-  // console.log(daySelected.add(30, 'days'))
-  // sunOrHol(daySelected.clone())
-
-  // }
-}) //end of super function
+})
