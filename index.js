@@ -18,27 +18,20 @@ const daysOfTheWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', '
 
 function dateObj() {
   let date = moment.utc(datePicker.valueAsDate)
-  let dateSelectedFromMonthStart = moment.utc(date).startOf('month')
+  let dateSelectedFromMonthStart = moment.utc(date).startOf('month').subtract(1,'day')
 
   let endOfCalendar = dateSelectedFromMonthStart.clone().add(12, 'months').endOf('month')
-  console.log(dateSelectedFromMonthStart)
 
   let calendarDayLength = endOfCalendar.diff(date, 'days')
   let result = {}
-  result[year] = {}
-  result[year][monthNum] = {
-    name: month
-  }
-  result[year][monthNum][weekNum] = {}
-  result[year][monthNum][weekNum][dateSelectedFromMonthStart.format('DD')] = {
-    dayName: dateSelectedFromMonthStart.format('dddd'),
-    count: (parseInt(dateSelectedFromMonthStart.format('DD')) - parseInt(date.format('DD')))
-    // businessDayCount:
-  }
+
+  console.log(calendarDayLength)
 
   let counter = 0
+  let working = dateSelectedFromMonthStart.clone()
   for (let i = 0; i < calendarDayLength; i++) {
-    let working = dateSelectedFromMonthStart.add(1, 'days')
+
+    console.log(dateSelectedFromMonthStart.format())
     let dayCog = working.format('DD');
     let weekCog = working.weeks()
     let monthCog = working.format('MM')
@@ -68,6 +61,7 @@ function dateObj() {
     } else {
       result[yearCog][monthCog][weekCog][dayCog]['count'] = ((parseInt(working.format('DD')) - parseInt(date.format('DD'))))
     }
+    working = working.add(1, 'days')
   }
   return result
 }
@@ -116,6 +110,7 @@ function topFill() {
 }
 topFill()
 
+
 // Date Object. Organized as  {Year: {Month:{Date:}}} Where the info in Date will be several key value pairs
 
 // Build the calendars by cloning elements and populating the data
@@ -140,13 +135,19 @@ function CalendarBuilder() {
 
 
   // Pick out the years
+
+
   for (let years in dateObjCycler) {
     // Pick out the months, and order them properly
     let monthArr = Object.keys(dateObjCycler[years]).sort()
-
+              console.log(dateObjCycler[years])
     // cycle through the months and build a new calendar month for each
     for (let months of monthArr) {
-      let theFirstIsA = dateObjCycler[years][months]['01']['dayName']
+      let weekArr = Object.keys(dateObjCycler[years][months]).sort()
+      console.log(weekArr)
+      for(let weeks of weekArr){
+      console.log(dateObjCycler[years][months][weeks])
+      let theFirstIsA = dateObjCycler[years][months][weeks]['01']['dayName']
 
       //clone the month
       let newBox = monthBox.cloneNode(true)
@@ -233,6 +234,7 @@ function CalendarBuilder() {
 
       }
     }
+  }
   }
 }
 CalendarBuilder()
