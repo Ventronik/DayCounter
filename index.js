@@ -18,33 +18,30 @@ const daysOfTheWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', '
 
 function dateObj() {
   let date = moment.utc(datePicker.valueAsDate)
-  let dateSelectedFromMonthStart = moment.utc(date).startOf('month').subtract(1,'day')
+  let dateSelectedFromMonthStart = moment.utc(date).startOf('month')
 
   let endOfCalendar = dateSelectedFromMonthStart.clone().add(12, 'months').endOf('month')
 
   let calendarDayLength = endOfCalendar.diff(date, 'days')
   let result = {}
 
-  console.log(calendarDayLength)
-
   let counter = 0
   let working = dateSelectedFromMonthStart.clone()
   for (let i = 0; i < calendarDayLength; i++) {
 
-    console.log(dateSelectedFromMonthStart.format())
     let dayCog = working.format('DD');
-    let weekCog = working.weeks()
+    let weekCog = working.format('ww')
     let monthCog = working.format('MM')
-    let monthCogName = working.format('MMMM')
+    //let monthCogName = working.format('MMMM')
     let yearCog = working.year();
-    let yearList = Object.entries(result)
+    //let yearList = Object.entries(result)
     let dayOfWeek = working.format('dddd')
 
     if (!result.hasOwnProperty(yearCog)) result[yearCog] = {}
 
     if (!result[yearCog].hasOwnProperty(monthCog)) {
       result[yearCog][monthCog] = {
-        name: monthCogName
+        //name: monthCogName
       }
     }
 
@@ -65,7 +62,7 @@ function dateObj() {
   }
   return result
 }
-console.log(dateObj())
+// console.log(dateObj())
 
 function topFill() {
 
@@ -111,10 +108,7 @@ function topFill() {
 topFill()
 
 
-// Date Object. Organized as  {Year: {Month:{Date:}}} Where the info in Date will be several key value pairs
-
-// Build the calendars by cloning elements and populating the data
-function CalendarBuilder() {
+function deletePreviousCalendar() {
   let toDelete = document.querySelectorAll('.toDelete') || []
 
   for (let deleted = 0; deleted < toDelete.length; deleted++) {
@@ -122,122 +116,173 @@ function CalendarBuilder() {
     toDelete[deleted].parentElement.removeChild(toDelete[deleted])
   }
 
-  let monthBox = document.querySelector('.monthBox')
-  let weekRow = document.querySelector('.weekRow')
-  let dayBox = document.querySelector('.dayBox')
-  let dateObjCycler = dateObj()
-  // console.log(dateObjCycler)
+}
+
+function htmlBuilder(months, years) {
+  //clone the month
   let parent = document.querySelector('.container')
+  let monthBox = document.querySelector('.monthBox')
+  let newBox = monthBox.cloneNode(true)
+  newBox.classList.remove('hidden')
+  newBox.classList.add('toDelete')
+  parent.appendChild(newBox)
+}
+
+function titles(newBox, months, years) {
+  // build the titleRow
   let titleRow = document.querySelector('.titleRow')
   let titleBox = document.querySelector('.titleBox')
+  for (let title of daysOfTheWeek) {
+    let newTitle = titleBox.cloneNode(true)
+    newTitle.innerHTML = title.slice(0, 3)
+    newTitle.classList.remove('hidden')
+    newBox.querySelector('.titleRow').appendChild(newTitle)
+  }
+
+
+
+
+
+  //this could be its own functions seperate from above.
+  let monthText = newBox.firstElementChild.firstElementChild
+  let yearText = newBox.firstElementChild.children[1]
+  monthText.innerHTML = '<h1>' + moment(months, 'MM').format('MMMM') + '</h1>'
+  yearText.innerHTML = '<h1>' + years + '</h1>'
+}
+
+function theFirstIs(workingDate) {
+  if (workingDate['01']) {
+    let theFirstIsA = workingDate['01']['dayName']
+    return theFirstIsA
+  }
+}
+
+function blankBuilder(theFirstIsA, newBox) {
+  //build the blank boxes at the beginning of the month
   let blankBox = document.querySelector('.blankBox')
-  let blankBuilder = blankBox.cloneNode(true)
+  let newWeekRow = newBox.querySelector('.weekRow')
+
+  for (let blankMaker = 0; blankMaker < daysOfTheWeek.indexOf(theFirstIsA); blankMaker++) {
+    let blankBuild = blankBox.cloneNode(true)
+    blankBuild.classList.remove('hidden')
+    newWeekRow.appendChild(blankBuild)
+  }
+}
+
+function dayBuilder(workingDate, newBox) {
+  //build days that aren't blank, and subsequent weekDays
+  let newWeekRow = newBox.querySelector('.weekRow')
+  let dayArr = Object.keys(workingDate).sort()
+        console.log(dayArr[dayArr.length-1])
+  for (let thisDay of dayArr) {
+
+    let dayInQuestion = workingDate[thisDay].dayName
+    let contentBox = document.querySelector('.fillBox')
+    let contentBuilder = contentBox.cloneNode('true')
+    let calendarContent = contentBuilder.querySelector('.calendarDate')
+    let countContent = contentBuilder.querySelector('.dayDisplay')
+    calendarContent.innerHTML = thisDay
+    countContent.innerHTML = workingDate[thisDay].count
+    //HIDDEN COULD BE A FUNCTION
+    contentBuilder.classList.remove('hidden')
+    //COULD BE A FUNCTION
+    if (countContent.innerHTML % 15 === 0) {
+      contentBuilder.classList.add('yellow')
+    }
+    if (countContent.innerHTML % 30 === 0) {
+      contentBuilder.classList.add('blue')
+    }
+    if (countContent.innerHTML == 0) {
+      contentBuilder.classList.add('green')
+    }
+    //THIS COULD BE ITS OWN FUNCTION
+    //If Sunday make a new row
+
+    let weekInsert = newBox.querySelector('.insertRows')
+    let weekRow = document.querySelector('.weekRow')
+    let nextWeekRow = weekRow.cloneNode(true)
+    let blankBox = document.querySelector('.blankBox')
+    if (dayInQuestion && dayInQuestion === daysOfTheWeek[0]) {
+      nextWeekRow.appendChild(contentBuilder)
+      // weekInsert.appendChild(newWeekRow)
+      weekInsert.appendChild(nextWeekRow)
+      newWeekRow = nextWeekRow
+    } else if (dayArr.length < 7 && dayInQuestion === workingDate[dayArr[dayArr.length-1]].dayName && dayArr[dayArr.length - 1] > 27) {
+        let contentBoxesSoFar = newWeekRow.children
+        console.log(dayInQuestion === workingDate[dayArr[dayArr.length-1]].dayName)
+        for (let soFar = contentBoxesSoFar.length; soFar < 9; soFar++) {
+          let newBlankBuilder = blankBox.cloneNode(true)
+          newBlankBuilder.classList.remove('hidden')
+          newWeekRow.appendChild(newBlankBuilder.cloneNode(true))
+      }
+    } else {
+        newWeekRow.appendChild(contentBuilder)
+    }
+  }
+}
+
+function removeIncompleteMonth () {
+  let parent = document.querySelector('.container')
+  let last = parent.children[parent.children.length - 1]
+  last.parentElement.removeChild(last)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+// Build the calendars by cloning elements and populating the data
+function CalendarBuilder() {
+  deletePreviousCalendar()
+
+  let dateObjCycler = dateObj()
 
 
   // Pick out the years
-
-
   for (let years in dateObjCycler) {
     // Pick out the months, and order them properly
     let monthArr = Object.keys(dateObjCycler[years]).sort()
-              console.log(dateObjCycler[years])
     // cycle through the months and build a new calendar month for each
     for (let months of monthArr) {
+
+      htmlBuilder(months, years)
+      const newBox = document.querySelector('.container').lastElementChild;
+      titles(newBox, months, years)
+
       let weekArr = Object.keys(dateObjCycler[years][months]).sort()
-      console.log(weekArr)
-      for(let weeks of weekArr){
-      console.log(dateObjCycler[years][months][weeks])
-      let theFirstIsA = dateObjCycler[years][months][weeks]['01']['dayName']
 
-      //clone the month
-      let newBox = monthBox.cloneNode(true)
-      newBox.classList.remove('hidden')
-      newBox.classList.add('toDelete')
-      // add month title and insert weeks
-      let weekInsert = newBox.querySelector('.insertRows')
-      let monthText = newBox.firstElementChild.firstElementChild
-      monthText.innerHTML = '<h1>' + moment(months, 'MM').format('MMMM') + '</h1>'
-      let yearText = newBox.firstElementChild.children[1]
-      yearText.innerHTML = '<h1>' + years + '</h1>'
-      //Put month at the bottom of the page
-      parent.appendChild(newBox)
+      for(let weeks of weekArr) {
 
-      //the week object we will be cloning
-      let newWeekRow = newBox.querySelector('.weekRow')
 
-      // build the titleRow
-      for (let title of daysOfTheWeek) {
-        let newTitle = titleBox.cloneNode(true)
-        newTitle.innerHTML = title.slice(0, 3)
-        newTitle.classList.remove('hidden')
-        newBox.querySelector('.titleRow').appendChild(newTitle)
-      }
-      // build the weeks of the month
+        const workingDate = dateObjCycler[years][months][weeks]
 
-      //build the blank boxes at the beginning of the month
-      for (let blankMaker = 0; blankMaker < daysOfTheWeek.indexOf(theFirstIsA); blankMaker++) {
+        let theFirst = theFirstIs(workingDate)
 
-        let blankBuilder = blankBox.cloneNode(true)
-
-        blankBuilder.classList.remove('hidden')
-        newWeekRow.appendChild(blankBuilder)
-      }
-
-      //build days that aren't blank, and subsequent weekDays
-      let dayArr = Object.keys(dateObjCycler[years][months]).sort()
-      if (dayArr.length > 27) {
-        for (let contentMaker of dayArr) {
-          // console.log(dateObjCycler[years][months])
-          let dayInQuestion = dateObjCycler[years][months][contentMaker].dayName
-          let contentBox = document.querySelector('.fillBox')
-          let contentBuilder = contentBox.cloneNode('true')
-          let calendarContent = contentBuilder.querySelector('.calendarDate')
-          let countContent = contentBuilder.querySelector('.dayDisplay')
-          calendarContent.innerHTML = contentMaker
-          countContent.innerHTML = dateObjCycler[years][months][contentMaker].count
-          contentBuilder.classList.remove('hidden')
-          if (countContent.innerHTML % 15 === 0) {
-            contentBuilder.classList.add('yellow')
-          }
-          if (countContent.innerHTML % 30 === 0) {
-            contentBuilder.classList.add('blue')
-          }
-          if (countContent.innerHTML == 0) {
-            contentBuilder.classList.add('green')
-          }
-
-          if (dayInQuestion && dayInQuestion === daysOfTheWeek[0]) {
-
-            let nextWeekRow = weekRow.cloneNode(true)
-            nextWeekRow.appendChild(contentBuilder)
-            weekInsert.appendChild(newWeekRow)
-            weekInsert.appendChild(nextWeekRow)
-            newWeekRow = nextWeekRow
-          } else {
-            if (contentMaker === 'name') {
-              let contentBoxesSoFar = newWeekRow.children
-              for (let soFar = contentBoxesSoFar.length; soFar < 9; soFar++) {
-                let newBlankBuilder = blankBox.cloneNode(true)
-
-                newBlankBuilder.classList.remove('hidden')
-                newWeekRow.appendChild(newBlankBuilder.cloneNode(true))
-
-              }
-            } else {
-              newWeekRow.appendChild(contentBuilder)
-            }
-          }
-        }
-      } else {
-        let last = parent.children[parent.children.length - 1]
-        last.parentElement.removeChild(last)
-
+        // build the weeks of the month
+        blankBuilder(theFirst, newBox)
+        dayBuilder(workingDate, newBox)
       }
     }
   }
-  }
+  removeIncompleteMonth ()
 }
 CalendarBuilder()
+
+
+
+
+
+
+
+
+
 
 function reset() {
 
@@ -257,6 +302,16 @@ function reset() {
   topFill()
   CalendarBuilder()
 }
+
+
+
+
+
+
+
+
+
+
 
 //start of update function
 document.getElementById('datePicker').addEventListener('change', () => {
