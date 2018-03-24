@@ -202,18 +202,24 @@ function dayBuilder(workingDate, newBox) {
     let weekRow = document.querySelector('.weekRow')
     let nextWeekRow = weekRow.cloneNode(true)
     let blankBox = document.querySelector('.blankBox')
-    if (dayInQuestion === daysOfTheWeek[0]) {
+    if (dayInQuestion === daysOfTheWeek[0] && dayArr.length < 7 && dayInQuestion === workingDate[dayArr[dayArr.length-1]].dayName && dayArr[dayArr.length - 1] > 27){
       nextWeekRow.appendChild(contentBuilder)
-      // weekInsert.appendChild(newWeekRow)
+      weekInsert.appendChild(nextWeekRow)
+      newWeekRow = nextWeekRow
+      newWeekRow.appendChild(contentBuilder)
+      let daysMadeInLastWeek = newWeekRow.children
+      for (let soFar = daysMadeInLastWeek.length; soFar < 9; soFar++) {
+        let newBlankBuilder = blankBox.cloneNode(true)
+        newBlankBuilder.classList.remove('hidden')
+        newWeekRow.appendChild(newBlankBuilder.cloneNode(true))
+      }
+    } else if(dayInQuestion === daysOfTheWeek[0]) {
+      nextWeekRow.appendChild(contentBuilder)
       weekInsert.appendChild(nextWeekRow)
       newWeekRow = nextWeekRow
     } else if (dayArr.length < 7 && dayInQuestion === workingDate[dayArr[dayArr.length-1]].dayName && dayArr[dayArr.length - 1] > 27) {
         newWeekRow.appendChild(contentBuilder)
-        console.log(contentBuilder)
-        console.log(dayInQuestion)
-        console.log(newWeekRow.children)
         let daysMadeInLastWeek = newWeekRow.children
-        // console.log(co ntentBoxesSoFar, dayInQuestion)
         for (let soFar = daysMadeInLastWeek.length; soFar < 9; soFar++) {
           let newBlankBuilder = blankBox.cloneNode(true)
           newBlankBuilder.classList.remove('hidden')
