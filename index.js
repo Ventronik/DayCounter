@@ -172,8 +172,8 @@ function blankBuilder(theFirstIsA, newBox) {
 function dayBuilder(workingDate, newBox) {
   //build days that aren't blank, and subsequent weekDays
   let newWeekRow = newBox.querySelector('.weekRow')
+  // console.log(workingDate)
   let dayArr = Object.keys(workingDate).sort()
-        // console.log(dayArr[dayArr.length-1])
   for (let thisDay of dayArr) {
 
     let dayInQuestion = workingDate[thisDay].dayName
@@ -267,9 +267,11 @@ function CalendarBuilder() {
       titles(newBox, months, years)
 
       let weekArr = Object.keys(dateObjCycler[years][months]).sort()
-
+      if(weekArr[0] === '01' && weekArr[weekArr.length-1] > 50) {
+        let yearEndWeekAdjustment = weekArr.shift()
+        weekArr.push(yearEndWeekAdjustment)
+      }
       for(let weeks of weekArr) {
-
 
         const workingDate = dateObjCycler[years][months][weeks]
 
