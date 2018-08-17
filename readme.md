@@ -1,8 +1,12 @@
-# Burckhart Day counter
+# Burckhart Day Counter
 
 A functional calendaring tool that displays how far days are from a selected day.
 
 Created as an exercise to build a barebones HTML and CSS site into an app with JavaScript DOM manipulation.
+
+A standard Day Counter is often used in banking looks like this:
+
+![Paper Version](https://raw.githubusercontent.com/Ventronik/DayCounter/Example1.jpg)
 
 ## Getting Started
 
