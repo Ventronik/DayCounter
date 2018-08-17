@@ -1,41 +1,36 @@
 
-//The selected date on the page. Either inputed by the user, or defaults to today
-let datePicker = document.getElementById('datePicker')
+let datePicker = document.getElementById('datePicker');
 localStorage.getItem('datePicked') ? datePicker.value = JSON.parse(localStorage.getItem('datePicked')) : datePicker.valueAsDate = new Date();
 
-let daySelected = moment.utc(datePicker.valueAsDate)
-const locale = "en-us"
+let daySelected = moment.utc(datePicker.valueAsDate);
+const locale = "en-us";
 
 // Isolated Days, Months, and Years
 let day = daySelected.format('DD');
 let weekNum = daySelected.week();
-// console.log(weekNum)
 let monthNum = daySelected.format('MM');
-let month = daySelected.format('MMMM')
+let month = daySelected.format('MMMM');
 let year = daySelected.year();
-const daysOfTheWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
+const daysOfTheWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
 function dateObj() {
-  let date = moment.utc(datePicker.valueAsDate)
-  let dateSelectedFromMonthStart = moment.utc(date).startOf('month')
+  let date = moment.utc(datePicker.valueAsDate);
+  let dateSelectedFromMonthStart = moment.utc(date).startOf('month');
 
-  let endOfCalendar = dateSelectedFromMonthStart.clone().add(12, 'months').endOf('month')
+  let endOfCalendar = dateSelectedFromMonthStart.clone().add(12, 'months').endOf('month');
 
-  let calendarDayLength = endOfCalendar.diff(date, 'days')
-  let result = {}
+  let calendarDayLength = endOfCalendar.diff(date, 'days');
+  let result = {};
 
-  let counter = 0
-  let working = dateSelectedFromMonthStart.clone()
+  let counter = 0;
+  let working = dateSelectedFromMonthStart.clone();
   for (let i = 0; i < calendarDayLength; i++) {
-
     let dayCog = working.format('DD');
-    let weekCog = working.format('ww')
-    let monthCog = working.format('MM')
-    //let monthCogName = working.format('MMMM')
+    let weekCog = working.format('ww');
+    let monthCog = working.format('MM');
     let yearCog = working.year();
-    //let yearList = Object.entries(result)
-    let dayOfWeek = working.format('dddd')
+    let dayOfWeek = working.format('dddd');
 
     if (!result.hasOwnProperty(yearCog)) result[yearCog] = {}
 
@@ -62,7 +57,6 @@ function dateObj() {
   }
   return result
 }
-// console.log(dateObj())
 
 function topFill() {
 
@@ -79,8 +73,6 @@ function topFill() {
   let thirtyDay = document.querySelector('.thirtyDay')
   let thirtyMonth = document.querySelector('.thirtyMonth')
   let thirtyYear = document.querySelector('.thirtyYear')
-
-  // console.log(plusThirty)
 
   thirtyDay.innerHTML = moment.utc(plusThirty).format('DD')
   thirtyMonth.innerHTML = moment.utc(plusThirty).format('MMMM')
@@ -107,7 +99,6 @@ function topFill() {
 }
 topFill()
 
-
 function deletePreviousCalendar() {
   let toDelete = document.querySelectorAll('.toDelete') || []
 
@@ -115,7 +106,6 @@ function deletePreviousCalendar() {
 
     toDelete[deleted].parentElement.removeChild(toDelete[deleted])
   }
-
 }
 
 function htmlBuilder(months, years) {
@@ -314,16 +304,6 @@ function reset() {
   topFill()
   CalendarBuilder()
 }
-
-
-
-
-
-
-
-
-
-
 
 //start of update function
 document.getElementById('datePicker').addEventListener('change', () => {
