@@ -16,9 +16,9 @@ Run the website link:  [Burckhart Day Counter](soft-camera.surge.sh)
 
 1. Select the day you want to be the start date.
 2. Review the preselected 30, 40, or 90 days at the top of the list
-![Top Section](https://raw.githubusercontent.com/Ventronik/DayCounter/master/Example2.jpg)
+![Top Section](https://raw.githubusercontent.com/Ventronik/DayCounter/master/Example2.png)
 3. Search Calendar below the Jumbotron to find the day you want
-![Bottom Section](https://raw.githubusercontent.com/Ventronik/DayCounter/master/Example3.jpg)
+![Bottom Section](https://raw.githubusercontent.com/Ventronik/DayCounter/master/Example3.png)
 
 ### Prerequisites
 
