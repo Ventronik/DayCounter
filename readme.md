@@ -6,7 +6,7 @@ Created as an exercise to build a barebones HTML and CSS site into an app with J
 
 A standard Day Counter is often used in banking looks like this:
 
-![Paper Version](https://raw.githubusercontent.com/Ventronik/DayCounter/Example1.jpg)
+![Paper Version](https://raw.githubusercontent.com/Ventronik/DayCounter/master/Example1.jpg)
 
 ## Getting Started
 
